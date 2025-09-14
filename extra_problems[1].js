@@ -150,6 +150,7 @@ const TrappingRain = (arr) => {
   }
   return water;
 };
+
 // let arr = [3, 0, 2, 0, 4];
 
-// console.log(TrappingRain(arr));
+// console.log(TrappingRain(arr)); 7
