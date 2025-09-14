@@ -1,0 +1,155 @@
+// 1) Reverse a string
+// Write a function that reverses a string
+const Reverseastring = (str) => {
+  let reverses = "";
+  for (let i = str.length - 1; i >= 0; i--) {
+    reverses += str[i];
+  }
+  return reverses;
+};
+
+// console.log(Reverseastring("nour")); ruon
+
+// 2) Remove duplicates from sorted array
+// You are given a sorted array arr[] containing positive integers. Your task is to remove
+// all duplicate elements from this array such that each element appears only once.
+// Return an array containing these distinct elements in the same order as they
+// appeared.
+
+const Removeduplicates = (arr) => {
+  const newArray = [];
+  for (let i = 0; i < arr.length; i++) {
+    for (let j = i + 1; j < arr.length; j++) {
+      if (arr[j] === arr[i]) {
+        let bool = false;
+        for (let k = 0; k <= newArray.length; k++) {
+          if (arr[i] === newArray[k]) {
+            bool = true;
+            break;
+          }
+        }
+        if (!bool) {
+          newArray[newArray.length] = arr[i];
+        }
+      }
+    }
+  }
+  if (newArray.length >= 0) return newArray;
+  else return arr;
+};
+
+// let arr2 = [1, 20, 20, 20, 20, 4, 4, 3, 6, 6, 6, 6, 8, 8, 9];
+// console.log(Removeduplicates(arr2));
+// [20, 4, 6, 8];
+
+// 3) Three Sum
+// Given an array arr[] and an integer sum, check if there is a triplet in the array which
+// sums up to the given target sum.
+const threesum = (arr, target) => {
+  let sum = 0;
+  for (let i = 0; i < arr.length - 1; i++) {
+    for (let j = 1 + i; j < arr.length - 1; j++) {
+      for (let k = 0; k < arr.length - 1; k++) {
+        if (i === k) k++;
+        else if (j === k) k++;
+        sum = arr[i] + arr[j] + arr[k];
+        if (sum === target) {
+          return true;
+        }
+        sum = 0;
+      }
+    }
+  }
+  return false;
+};
+
+// let arr22 = [1, 20, 4, 3, 6, 8];  true
+// console.log(threesum(arr22, 13));
+
+// 4) Container with Most Water
+// Given an array arr[] of non-negative integers, where each element arr[i] represents
+// the height of the vertical lines, find the maximum amount of water that can be
+// contained between any two lines, together with the x-axis.
+
+const Container = (arr) => {
+  let maxWater = 0;
+  let left = 0;
+  let right = arr.length - 1;
+
+  while (left < right) {
+    let height = arr[left];
+    if (arr[right] < arr[left]) {
+      height = arr[right];
+    }
+
+    let width = right - left;
+    let area = height * width;
+
+    if (area > maxWater) {
+      maxWater = area;
+    }
+
+    if (arr[left] < arr[right]) {
+      left++;
+    } else {
+      right--;
+    }
+  }
+  return maxWater;
+};
+
+// let arr = [3, 1, 2, 4, 5];
+// console.log(Container(arr)); 12
+
+// 5) Longest Substring Without Repeating Characters
+// Given a string s having lowercase characters, find the length of the longest substring
+// without repeating characters.
+
+const LongestSubstring = (str) => {
+  let seeni = {};
+  let start = 0;
+  let maxLen = 0;
+
+  for (let end = 0; end < str.length; end++) {
+    if (str[end] in seeni && seeni[str[end]] >= start) {
+      start = seeni[str[end]] + 1;
+    } else {
+      let currentLen = end - start + 1;
+      if (currentLen > maxLen) {
+        maxLen = currentLen;
+      }
+    }
+    seeni[str[end]] = end;
+  }
+
+  return maxLen;
+};
+
+// console.log(LongestSubstring("pwwkew"));  3
+
+// 6) Trapping Rain Water Problem
+// Given an array arr[] ofsize n consisting of non-negative integers, where each element
+// represents the height of a bar in an elevation map and the width of each bar is 1,
+// determine the total amount of water that can be trapped between the bars after it
+// rains.
+
+const TrappingRain = (arr) => {
+  let j = 0;
+  let water = 0;
+  for (let i = 1; i < arr.length - 1; i++) {
+    let wa = 0;
+    if (arr[j] > arr[i]) {
+      wa = arr[j] - arr[i];
+      water += wa;
+    } else if (arr[j] < arr[i]) {
+      j = i;
+    }
+  }
+  if (j > arr[arr.length - 1]) {
+    water = water - arr[arr.length - 1];
+  }
+  return water;
+};
+// let arr = [3, 0, 2, 0, 4];
+
+// console.log(TrappingRain(arr));
