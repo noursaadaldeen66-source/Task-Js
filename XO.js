@@ -5,8 +5,18 @@ const readline = require("readline").createInterface({
 
 let myArray = [1, 2, 3, 4, 5, 6, 7, 8, 9];
 let elementCount = 0;
-let massge = "XMAN CHOSE PLACE";
+let message = "XMAN CHOSE PLACE";
 let count = 1;
+
+function displayBoard() {
+  console.log("\n");
+  console.log(` ${myArray[0]} | ${myArray[1]} | ${myArray[2]} `);
+  console.log("-----------");
+  console.log(` ${myArray[3]} | ${myArray[4]} | ${myArray[5]} `);
+  console.log("-----------");
+  console.log(` ${myArray[6]} | ${myArray[7]} | ${myArray[8]} `);
+  console.log("\n");
+}
 
 function checkWin() {
   const winConditions = [
@@ -31,51 +41,65 @@ function checkWin() {
 
 function askForElement() {
   let winner;
-  if (count % 2 == 0) massge = "OMAN CHOSE PLACE";
-  readline.question(
-    ` Play X: ${myArray.splice(0, 3)} \n \t \t ${myArray.splice(
-      0,
-      3
-    )}  \n \t \t ${myArray.splice(0, 9)} \n ${massge}: `,
-    (input) => {
-      if (input.trim() === "") {
-        if (count % 2 != 0 && parseInt(input) == /[1-9]/.test) {
-          massge = "OMAN CHOSE PLACE";
-          count++;
-        } else if (count % 2 == 0 && parseInt(input) == /[1-9]/.test) {
-          count++;
-        } else if (myArray[parseInt(input) - 1] === String)
-          console.log("Wrong CHOSE");
-        askForElement();
-        return;
-      }
-
-      if (count % 2 != 0) {
-        myArray[parseInt(input) - 1] = "X";
-      } else if (count % 2 == 0) {
-        myArray[parseInt(input) - 1] = "O";
-      }
-
-      //check
-      winner = checkWin();
-      if (winner) {
-        displayBoard();
-        console.log(`Player ${winner} WINS!`);
-        readline.close();
-        return;
-      }
-
-      elementCount++;
-
-      if (elementCount < 10) {
-        askForElement();
-      } else {
-        console.log("NO WINER");
-
-        readline.close();
-      }
+  
+  if (count % 2 === 0) {
+    message = "OMAN CHOSE PLACE (1-9)";
+  } else {
+    message = "XMAN CHOSE PLACE (1-9)";
+  }
+  
+  displayBoard();
+  
+  readline.question(`${message}: `, (input) => {
+    const position = parseInt(input) - 1;
+    
+    // التحقق من صحة الإدخال
+    if (isNaN(position) || position < 0 || position > 8) {
+      console.log("Invalid input! Please choose a number between 1 and 9.");
+      askForElement();
+      return;
     }
-  );
+    
+    // التحقق إذا كانت الخلية محجوزة مسبقاً
+    if (myArray[position] === 'X' || myArray[position] === 'O') {
+      console.log("This place is already taken! Choose another one.");
+      askForElement();
+      return;
+    }
+    
+    // تحديث اللوحة بناءً على دور اللاعب
+    if (count % 2 !== 0) {
+      myArray[position] = "X";
+      message = "OMAN CHOSE PLACE";
+    } else {
+      myArray[position] = "O";
+      message = "XMAN CHOSE PLACE";
+    }
+    
+    count++;
+    elementCount++;
+
+    // التحقق من وجود فائز
+    winner = checkWin();
+    if (winner) {
+      displayBoard();
+      console.log(`Player ${winner} WINS!`);
+      readline.close();
+      return;
+    }
+
+    // التحقق إذا انتهت اللعبة بدون فائز
+    if (elementCount === 9) {
+      displayBoard();
+      console.log("It's a DRAW! No winner.");
+      readline.close();
+      return;
+    }
+
+    // الاستمرار في اللعبة
+    askForElement();
+  });
 }
 
+// بدء اللعبة
 askForElement();
