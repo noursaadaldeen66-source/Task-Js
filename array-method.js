@@ -71,3 +71,12 @@ let exists = words.includes("JavaScript");
 console.log(words);
 
 words.forEach((words) => console.log(` ${words}\n`));
+
+let joined = words.join("-");
+console.log("Joined string:", joined);
+
+let sortedWords = [...words].sort();
+
+let sortedIndex = sortedWords.indexOf(specificWord);
+console.log("Sorted words:", sortedWords);
+console.log(`Index of "${specificWord}" after sorting: ${sortedIndex}`);
